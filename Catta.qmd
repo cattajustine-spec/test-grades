@@ -348,7 +348,26 @@ avg_grades_group_sex |>
   ) +
   theme_minimal()
 ```
+Fortunately, there seems to be no link between sex, group and grades.
 
+
+## question 19
+
+```{r}
+grades_student_course <- grades_courses |>
+  filter(!is.na(grade)) |>
+  group_by(id, group, course) |>
+  summarise(avg_grade = round(mean(grade),2), .groups = "drop") |>
+  pivot_wider(
+    id_cols = c(id, group),
+    names_from = course,
+    values_from = avg_grade
+  )
+
+grades_student_course |>
+  slice_head(n = 5) |>
+  knitr::kable(caption = "Average grades per student")
+```
 
 
 
