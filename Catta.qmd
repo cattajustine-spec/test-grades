@@ -157,7 +157,7 @@ oldest_per_group <- students |>
 oldest_per_group |>
   knitr::kable(format = "markdown", caption = "Oldest Student in Each Group")
 ```
-
+# 3
 ## question 10
 
 ```{r}
@@ -473,6 +473,45 @@ final_grade |>
   ) +
   theme_minimal()
 ```
+
+
+## question 26
+
+```{r}
+pass_data <- grades_student_course |>
+  pivot_longer(cols = -c(id, group), names_to = "course", values_to = "avg_grade") |>
+  inner_join(grades |> select(course_id, trimester) |> distinct() |> 
+               inner_join(courses |> select(course, course_id), by = join_by(course_id)),
+             by = join_by(course)) |>
+  group_by(id) |>
+  summarise(
+    final_grade = mean(avg_grade, na.rm = TRUE), 
+    min_course_grade = min(avg_grade, na.rm = TRUE), 
+    trimester_avg_ok = all(tapply(avg_grade, trimester, mean) >= 10),
+    .groups = "drop"
+  ) |>
+  mutate(
+    pass = min_course_grade >= 5 & trimester_avg_ok
+  ) |>
+  inner_join(students |> select(id, group, sex), by = join_by(id)) |>
+  select(id, group, sex, final_grade, pass)
+
+
+pass_data |>
+  slice_head(n = 5) |>
+  knitr::kable(caption = "Pass/Fail Status per Student")
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 
