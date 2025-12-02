@@ -14,6 +14,7 @@ library(dplyr)
 library(here)
 library(readr)
 library(knitr)
+library(lubridate)
 ```
 
 ```{r}
@@ -111,6 +112,23 @@ students |>
   theme_minimal()
 ```
 
+## question 7
+
+```{r}
+students <- students |> 
+    mutate(age = round(time_length(today() - birth_date, unit = "year")))
+```
+
+
+```{r}
+students |> 
+  ggplot(aes(x = age)) +
+  geom_histogram(bins = 20) +
+  labs(x = "Age",
+    y = "Number of Students",
+    title = "Distribution of Student Ages") +
+  theme_minimal()
+```
 
 
 
