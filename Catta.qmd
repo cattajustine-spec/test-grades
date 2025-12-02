@@ -10,6 +10,8 @@ https://github.com/cattajustine-spec/test-grades.git
 # introduction
 
 ```{r}
+#| message: false
+#| warning: false
 library(vroom)
 library(ggplot2)
 library(knitr)
@@ -30,6 +32,7 @@ here::i_am("test-grades.Rproj")
 ## question 1
 
 ```{r}
+#| message: false
 courses <- vroom(here("data", "courses.csv"))
 ```
 
@@ -49,6 +52,7 @@ courses <- courses |>
 ## question 3
 
 ```{r}
+#| message: false
 students <- vroom(here("data", "students.csv"))
 spec(students)
 ```
@@ -75,6 +79,7 @@ for (col in cols_to_report) {
 ## question 4
 
 ```{r}
+#| message: false
 grades <- vroom(here("data", "grades.csv"))
 ```
 ```{r}
@@ -101,6 +106,8 @@ students |>
     title = "Number of Students per Group") +
   theme_minimal()
 ```
+It looks like there is disparities among the groups, with the group 14 having the least number of students (approx 25) and groups 4 and 5 having the most (approx 50)
+
 
 ## question 6
 
@@ -115,6 +122,8 @@ students |>
     title = "Gender Balance per Group") +
   theme_minimal()
 ```
+All groups have more or less the same number of girls and boys, but with some disparities. It seems like there are more boys than girls.
+
 
 ## question 7
 
@@ -133,6 +142,8 @@ students |>
     title = "Distribution of Student Ages") +
   theme_minimal()
 ```
+A lot of students are between 21 and 23 years old, a few are around 25 and some are above 25.
+
 
 ## question 8
 
@@ -202,6 +213,8 @@ avg_grades_martial |>
   theme_minimal()
 ```
 
+It looks like the average grade in Martial Arts is not dependent on the group, apart from group 18 that shows a smaller average than the other groups.
+
 ## question 12
 
 ```{r}
@@ -267,7 +280,20 @@ grades_per_student |>
     title = "Distribution of Number of Grades by Sex"
   ) +
   theme_minimal()
+
+grades_per_student |>
+  ggplot(aes(x = num_grades, fill = sex)) +
+  geom_histogram(binwidth = 0.5, position = "fill") +
+  labs(
+    x = "Number of Grades",
+    y = "Number of Students",
+    fill = "Sex",
+    title = "Distribution of Number of Grades by Sex"
+  ) +
+  theme_minimal()
 ```
+The number of grades is not sex-dependent as girls and boys have roughly the same amount of grades. Boys are more represented because they are more.
+
 
 ## question 15
 
@@ -309,6 +335,8 @@ drumming_distribution |>
   ) +
   theme_minimal()
 ```
+Most students have 9 grades, a few have 8 and a really low share of them have 7.
+
 
 ## question 17
 
@@ -327,7 +355,7 @@ avg_grades_group |>
   ) +
   theme_minimal()
 ```
-As we can see, there is no link between the group and the number of grades in Drumming, per student.
+As we can see, there is no link between the group and the number of grades in Drumming, per student because all have around 8,8.
 
 ## question 18
 
@@ -423,6 +451,8 @@ grades_student_course |>
   ) +
   theme_minimal()
 ```
+We can see there is a negative correlation. 
+
 
 ## question 23
 
@@ -455,8 +485,7 @@ final_grade |>
   ) +
   theme_minimal()
 ```
-
-
+The distribution of final grade by group is really volatile across groups. The highest-average group is group 12 with an average between 11.5 and 12, and the lowest-average group is 18 with an average at 10. The rest of groups is around 10.5 and 11.5.
 
 ## question 25
 
@@ -473,7 +502,7 @@ final_grade |>
   ) +
   theme_minimal()
 ```
-
+In some groups, girls show higher average grades and in others, boys show higher average grade, so we cannot say anything. Globally their standard deviation seems to be roughly the same for each group.
 
 ## question 26
 
@@ -531,11 +560,42 @@ pass_rate_group |>
 The pass rate is very low, for each group. For only 7 groups, some students passed.
 
 
+## question 29
 
+```{r}
+course_failures <- grades_courses |>
+  filter(!is.na(grade)) |>
+  filter(grade < 5) |>
+  group_by(course) |>
+  summarise(num_failures = n(), .groups = "drop") |>
+  arrange(desc(num_failures))
 
+course_failures |>
+  slice_head(n = 5) |>
+  knitr::kable(caption = "Top Courses Responsible for Failures (<5)")
 
+```
 
+## question 30
 
+```{r}
+age_pass <- pass_data |>
+  inner_join(students |> select(id, age), by = "id") |>
+  group_by(age) |>
+  summarise(success_rate = mean(pass), .groups = "drop")
+
+age_pass |>
+  ggplot(aes(x = age, y = success_rate)) +
+  geom_line(color = "steelblue", size = 1) +
+  geom_point(color = "red") +
+  labs(
+    x = "Age",
+    y = "Success Rate"
+  ) +
+  theme_minimal()
+
+```
+It does not seem like the success rate is age dependent as very few students are older than 25 years old and most students are between 20 and 25. Here the success rate is high between 20 and 25 but not for one age in particular. 
 
 
 
