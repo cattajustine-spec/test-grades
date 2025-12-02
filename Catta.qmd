@@ -130,8 +130,15 @@ students |>
   theme_minimal()
 ```
 
+## question 8
 
+```{r}
+median_age_group <- students |> 
+  group_by(group) |>
+  summarise("Median age" = round(median(age)), .groups = "drop")
 
+median_age_group |> knitr::kable(format = "markdown", caption = "Median Age of Students per Group")
+```
 
 
 
