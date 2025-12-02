@@ -221,11 +221,37 @@ grades |>
 ```
 
 As we can see, the peak of grades in trimester 1 is above the ones of trimester 2 and 3, because it is around 14 when the other two are more around 10 for trimester 2 and 7.5 for trimester 3. It seems like the year gets more difficult as time passes.
-Also for the 1st trimester, the grades seem to be more volatile with a huge part of students between 6 and 16, the second trimester shows a small variance but with a long tail to the right. 
+Also for the 1st trimester, the grades seem to be more volatile with a huge part of students between 6 and 16, the second trimester shows a small variance but with a long tail to the right.  
 
 # 4
 
 ## question 13
+```{r}
+grades_per_student <- grades |>
+  filter(!is.na(grade)) |>
+  group_by(id) |>
+  summarise(num_grades = n(), .groups = "drop") |>
+  inner_join(
+    students |> select(id, group, sex),
+    by = join_by(id)
+  )
+
+grades_per_student |>
+  slice_head(n = 5) |>
+  knitr::kable(caption = "Number of grades per student (extract)")
+
+
+summary_table <- grades_per_student |>
+  summarise(
+    min = min(num_grades),
+    max = max(num_grades),
+    mean = mean(num_grades),
+    median = median(num_grades)
+  )
+
+summary_table |>
+  knitr::kable(caption = "Summary of number of grades per student", format = "markdown")
+```
 
 
 
