@@ -163,6 +163,24 @@ num_grades <- grades |>
 
 cat("The data set contains", num_grades, "grades.")
 ```
+## question 11
+
+```{r}
+grades_courses <- grades |>
+  inner_join(courses |> select(course_id, course),
+    by = join_by(course_id)) |> select(id, course, grade) |>
+  inner_join(students |> select (id, group), by = join_by(id)) |> 
+  select(id, group, course, grade) 
+```
+
+
+```{r}
+avg_grades_martial <- grades_courses |>
+  filter(course == "Martial Arts and Self-Defense") |>
+  group_by(group) |>
+  summarise(avg_grade = mean(grade, na.rm = TRUE), .groups = "drop")
+```
+
 
 
 
