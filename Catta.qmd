@@ -140,11 +140,14 @@ median_age_group <- students |>
 median_age_group |> knitr::kable(format = "markdown", caption = "Median Age of Students per Group")
 ```
 
+## question 9
 
-
-
-
-
-
-
+```{r}
+oldest_per_group <- students |>
+  group_by(group) |>
+  slice_max(age, n = 1, with_ties = FALSE) |>
+  ungroup() |>
+  select(id, sex, age) |>
+  arrange(desc(age))
+```
 
