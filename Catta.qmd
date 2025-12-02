@@ -3,6 +3,9 @@ title: "Catta"
 author: "Justine Catta"
 format: html
 ---
+# link to github :
+https://github.com/cattajustine-spec/test-grades.git
+
 
 # introduction
 
@@ -166,6 +169,12 @@ cat("The data set contains", num_grades, "grades.")
 ## question 11
 
 ```{r}
+courses <- courses |>
+  rename(
+    course = `course name`,
+    course_id = identifier
+  )
+
 grades_courses <- grades |>
   inner_join(courses |> select(course_id, course),
     by = join_by(course_id)) |> select(id, course, grade) |>
@@ -181,6 +190,16 @@ avg_grades_martial <- grades_courses |>
   summarise(avg_grade = mean(grade, na.rm = TRUE), .groups = "drop")
 ```
 
+
+```{r}
+avg_grades_martial |>
+  ggplot(aes(x = group, y = avg_grade)) +
+  geom_col() +
+  labs(x = "Group",
+    y = "Average Grade",
+    title = "Average Grade in Martial Arts and Self-Defense per Group") +
+  theme_minimal()
+```
 
 
 
