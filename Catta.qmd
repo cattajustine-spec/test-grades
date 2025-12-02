@@ -369,6 +369,24 @@ grades_student_course |>
   knitr::kable(caption = "Average grades per student")
 ```
 
+## question 20
+
+```{r}
+grades_student_course |>
+  ggplot(aes(
+    x = `Astronomy and Celestial Navigation`,
+    y = `Storytelling and Oral Tradition`
+  )) +
+  geom_point(color = "steelblue", alpha = 0.7) +
+  labs(
+    x = "Average Grade in Astronomy and Celestial Navigation",
+    y = "Average Grade in Storytelling and Oral Tradition",
+    title = "Comparison of Average Grades per Student"
+  ) +
+  theme_minimal()
+```
+There is no causality between the average grade in astronomy and the average grade in storytelling. 
+
 
 
 
