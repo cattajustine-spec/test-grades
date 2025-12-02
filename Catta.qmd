@@ -404,6 +404,25 @@ correlation_group |>
   knitr::kable(caption = "Correlation between Earth Magic and Herbalism by group", fromat = "markdown")
 ```
 
+## question 22
+
+```{r}
+grades_student_course |>
+  filter(group == correlation_group |>
+           slice_max(abs(Correlation), n = 1) |>
+           pull(group)) |>
+  ggplot(aes(
+    x = `Herbalism and Traditional Medicine`,
+    y = `Earth Magic and Fertility Rituals`
+  )) +
+  geom_point(color = "steelblue", alpha = 0.7) +
+  labs(
+    x = "Average Grade in Herbalism and Traditional Medicine",
+    y = "Average Grade in Earth Magic and Fertility Rituals",
+    title = paste("Correlation Scatter Plot for the group with the highest absolute Correlation")
+  ) +
+  theme_minimal()
+```
 
 
 
