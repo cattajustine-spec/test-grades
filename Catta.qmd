@@ -201,6 +201,40 @@ avg_grades_martial |>
   theme_minimal()
 ```
 
+## question 12
+
+```{r}
+grades <- grades |>
+  inner_join(courses |> select(course_id, trimester), by = join_by(course_id)) |>
+  filter (!is.na(grade))
+
+grades |>
+  ggplot(aes(x = grade, fill = factor(trimester))) +
+  geom_density(alpha = 0.4) +
+  labs(
+    x = "Grade",
+    y = "Density",
+    fill = "Trimester",
+    title = "Distribution of Grades by Trimester"
+  ) +
+  theme_minimal()
+```
+
+As we can see, the peak of grades in trimester 1 is above the ones of trimester 2 and 3, because it is around 14 when the other two are more around 10 for trimester 2 and 7.5 for trimester 3. It seems like the year gets more difficult as time passes.
+Also for the 1st trimester, the grades seem to be more volatile with a huge part of students between 6 and 16, the second trimester shows a small variance but with a long tail to the right. 
+
+# 4
+
+## question 13
+
+
+
+
+
+
+
+
+
 
 
 
