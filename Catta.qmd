@@ -387,6 +387,22 @@ grades_student_course |>
 ```
 There is no causality between the average grade in astronomy and the average grade in storytelling. 
 
+## question 21
+
+```{r}
+correlation_group <- grades_student_course |>
+  group_by(group) |>
+  summarise(
+    Correlation = cor(
+      `Earth Magic and Fertility Rituals`,
+      `Herbalism and Traditional Medicine`
+    ),
+    .groups = "drop"
+  )
+
+correlation_group |>
+  knitr::kable(caption = "Correlation between Earth Magic and Herbalism by group", fromat = "markdown")
+```
 
 
 
