@@ -22,11 +22,13 @@ here::i_am("test-grades.Rproj")
 
 # 1.1
 
+## question 1
+
 ```{r}
 courses <- vroom(here("data", "courses.csv"))
 ```
 
-# 1.2
+## question 2
 
 ```{r}
 courses <- courses |>
@@ -37,15 +39,29 @@ courses <- courses |>
  courses |> knitr::kable(format = "markdown")
 ```
 
+# 1.2
 
+## question 3
 
+```{r}
+students <- vroom(here("data", "students.csv"))
+spec(students)
+```
 
+```{r}
+students <- read_csv("data/students.csv", 
+    col_types = cols(
+     id = col_integer(),
+    group = col_factor(),
+    sex = col_factor(), 
+    birth_date = col_date()))
 
+```
 
+```{r}
+cols_to_report <- c("birth_date", "sex")
 
-
-
-
-
-
-
+for (col in cols_to_report) {
+  cat("The **", col, "** column of the **students** data frame is of class **",
+      class(students[[col]])[1], "**.\n\n", sep = "")}
+```
