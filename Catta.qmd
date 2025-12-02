@@ -268,8 +268,44 @@ grades_per_student |>
   theme_minimal()
 ```
 
+## question 15
 
+```{r}
+drumming_grades <- grades |>
+  filter(!is.na(grade)) |>
+  inner_join(
+    courses |> select(course_id, course),
+    by = join_by(course_id)
+  ) |>
+  filter(course == "Drumming and Music") |>
+  group_by(id) |>
+  summarise(num_grades_drumming = n(), .groups = "drop") |>
+  inner_join(
+    students |> select(id, group),
+    by = join_by(id)
+  )
 
+drumming_grades |>
+  slice_head(n = 5) |>
+  knitr::kable(caption = "Number of grades in Drumming and Music per student (extract)", format = "markdown")
+```
+## question 16
+
+```{r}
+drumming_distribution <- drumming_grades |>
+  group_by(num_grades_drumming) |>
+  summarise(num_students = n(), .groups = "drop")
+
+drumming_distribution |>
+  ggplot(aes(x = num_grades_drumming, y = num_students)) +
+  geom_col() +
+  labs(
+    x = "Number of Grades in Drumming and Music",
+    y = "Number of Students",
+    title = "Distribution of Number of Grades in Drumming and Music"
+  ) +
+  theme_minimal()
+```
 
 
 
