@@ -13,18 +13,38 @@ library(knitr)
 library(dplyr)
 library(here)
 library(readr)
+library(knitr)
 ```
 
 ```{r}
 here::i_am("test-grades.Rproj")
 ```
 
-
 # 1.1
 
 ```{r}
 courses <- vroom(here("data", "courses.csv"))
 ```
+
+# 1.2
+
+```{r}
+courses <- courses |>
+  rename(`course name` = course,
+    identifier = course_id,
+    `number of exams` = nb_grades) |>
+  arrange(`course name`) 
+ courses |> knitr::kable()
+```
+
+
+
+
+
+
+
+
+
 
 
 
