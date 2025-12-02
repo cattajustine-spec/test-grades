@@ -253,6 +253,20 @@ summary_table |>
   knitr::kable(caption = "Summary of number of grades per student", format = "markdown")
 ```
 
+## question 14
+
+```{r}
+grades_per_student |>
+  ggplot(aes(x = num_grades, fill = sex)) +
+  geom_histogram(binwidth = 0.5, position = "dodge") +
+  labs(
+    x = "Number of Grades",
+    y = "Number of Students",
+    fill = "Sex",
+    title = "Distribution of Number of Grades by Sex"
+  ) +
+  theme_minimal()
+```
 
 
 
