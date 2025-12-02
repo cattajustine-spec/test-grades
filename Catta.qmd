@@ -18,6 +18,7 @@ library(here)
 library(readr)
 library(knitr)
 library(lubridate)
+library(tidyr)
 ```
 
 ```{r}
@@ -281,11 +282,13 @@ drumming_grades <- grades |>
   group_by(id) |>
   summarise(num_grades_drumming = n(), .groups = "drop") |>
   inner_join(
-    students |> select(id, group),
+    students |> select(id, group, sex),
     by = join_by(id)
   )
 
 drumming_grades |>
+  select (id, group, num_grades_drumming) |>
+  rename ("Number of grades in Drumming class" = num_grades_drumming) |>
   slice_head(n = 5) |>
   knitr::kable(caption = "Number of grades in Drumming and Music per student (extract)", format = "markdown")
 ```
@@ -303,6 +306,45 @@ drumming_distribution |>
     x = "Number of Grades in Drumming and Music",
     y = "Number of Students",
     title = "Distribution of Number of Grades in Drumming and Music"
+  ) +
+  theme_minimal()
+```
+
+## question 17
+
+```{r}
+avg_grades_group <- drumming_grades |>
+  group_by(group) |>
+  summarise(avg_num_grades = mean(num_grades_drumming), .groups = "drop")
+
+avg_grades_group |>
+  ggplot(aes(x = group, y = avg_num_grades)) +
+  geom_col() +
+  labs(
+    x = "Group",
+    y = "Average Number of Grades",
+    title = "Average Number of Grades in Drumming per Group"
+  ) +
+  theme_minimal()
+```
+As we can see, there is no link between the group and the number of grades in Drumming, per student.
+
+## question 18
+
+```{r}
+avg_grades_group_sex <- drumming_grades |>
+  group_by(group, sex) |>
+  summarise(avg_num_grades = mean(num_grades_drumming), .groups = "drop")
+
+
+avg_grades_group_sex |>
+  ggplot(aes(x = group, y = avg_num_grades, fill = sex)) +
+  geom_col(position = "dodge") +
+  labs(
+    x = "Group",
+    y = "Average Number of Grades",
+    fill = "Sex",
+    title = "Average Number of Grades in Drumming by Group and Sex"
   ) +
   theme_minimal()
 ```
