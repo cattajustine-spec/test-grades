@@ -149,5 +149,24 @@ oldest_per_group <- students |>
   ungroup() |>
   select(id, sex, age) |>
   arrange(desc(age))
+
+oldest_per_group |>
+  knitr::kable(format = "markdown", caption = "Oldest Student in Each Group")
 ```
+
+## question 10
+
+```{r}
+num_grades <- grades |>
+  filter(!is.na(grade)) |>
+  nrow()
+
+cat("The data set contains", num_grades, "grades.")
+```
+
+
+
+
+
+
 
