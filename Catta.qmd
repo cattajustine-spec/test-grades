@@ -83,9 +83,33 @@ grades <- read_delim(
     grade = col_double()))
 ```
 
+# 2
+## question 5
 
+```{r}
+students |> 
+  count(group) |>
+  ggplot(aes(x = group, y = n)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Group",
+    y = "Number of Students",
+    title = "Number of Students per Group") +
+  theme_minimal()
+```
 
+## question 6
 
+```{r}
+students |>
+  count(group, sex) |>
+  ggplot(aes(x = group, y = n, fill = sex)) +
+  geom_bar(stat = "identity", position = position_fill()) +
+  labs(x = "Group",
+    y = "Number of Students",
+    fill = "Sex",
+    title = "Gender Balance per Group") +
+  theme_minimal()
+```
 
 
 
