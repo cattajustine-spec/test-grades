@@ -34,7 +34,7 @@ courses <- courses |>
     identifier = course_id,
     `number of exams` = nb_grades) |>
   arrange(`course name`) 
- courses |> knitr::kable()
+ courses |> knitr::kable(format = "markdown")
 ```
 
 
