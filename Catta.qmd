@@ -502,6 +502,35 @@ pass_data |>
   knitr::kable(caption = "Pass/Fail Status per Student")
 ```
 
+## question 27
+
+```{r}
+fail_high_grade <- pass_data |>
+  filter(!pass & final_grade >= 10)
+
+cat("The number of students who do not pass but have a final grade above 10 is", nrow(fail_high_grade))
+```
+
+## question 28
+
+```{r}
+pass_rate_group <- pass_data |>
+  group_by(group) |>
+  summarise(pass_rate = mean(pass), .groups = "drop")
+
+pass_rate_group |>
+  ggplot(aes(x = factor(group), y = pass_rate)) +
+  geom_col() +
+  labs(
+    x = "Group",
+    y = "Pass Rate"
+  ) +
+  theme_minimal()
+
+```
+The pass rate is very low, for each group. For only 7 groups, some students passed.
+
+
 
 
 
